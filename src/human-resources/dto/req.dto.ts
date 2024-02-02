@@ -8,3 +8,10 @@ export class FindEmployeeReqDto {
   @IsNumber()
   id: number;
 }
+
+export class FindJobHistoryReqdto {
+  @ApiProperty({ required: true, example: 101 })
+  @Transform((param) => Number(param.value))
+  @IsNumber()
+  id: number;
+}

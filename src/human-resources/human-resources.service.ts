@@ -2,12 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Employee } from './entities/employee.entity';
 import { JobHistory } from './entities/job-history.entity';
-import { Repository } from 'typeorm';
+import { DataSource, Repository, getManager } from 'typeorm';
 import { Department } from './entities/department.entity';
 
 @Injectable()
 export class HumanResourcesService {
   constructor(
+    private dataSource: DataSource,
     @InjectRepository(Employee) private employeeRepository: Repository<Employee>,
     @InjectRepository(JobHistory) private jobHistoryRepository: Repository<JobHistory>,
     @InjectRepository(Department) private departmentRepository: Repository<Department>,
@@ -24,11 +25,48 @@ export class HumanResourcesService {
   }
 
   // TODO. 특정 사원의 이력 정보 조회 API
-  async findJobHisotryById(employee_id: number) {
-    return await this.jobHistoryRepository.find({
-      where: { employee: { employee_id } },
-      relations: ['job', 'department'],
-    });
+  async findJobHisotryById(employee_id: number, page: number, size: number) {
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      const history = await queryRunner.query(
+        `SELECT
+          jh.employee_id,
+          jh.start_date,
+          jh.end_date,
+          jh.job_id,
+          j.job_title,
+          j.min_salary,
+          j.max_salary,
+          d.department_id,
+          d.department_name
+         FROM job_history jh
+         JOIN jobs j ON jh.job_id = j.job_id
+         JOIN departments d ON jh.department_id = d.department_id
+         WHERE jh.employee_id = ? LIMIT ? OFFSET ?`,
+        [employee_id, size, (page - 1) * size],
+      );
+
+      await queryRunner.commitTransaction();
+
+      return history;
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw error;
+    } finally {
+      await queryRunner.release();
+    }
+
+    // const history = await this.jobHistoryRepository.find({
+    //   where: { employee: { employee_id } },
+    //   relations: ['job', 'department'],
+    //   skip: (page - 1) * size,
+    //   take: size,
+    // });
+
+    // return history;
   }
 
   // TODO. 부서 및 위치 정보 조회 API
