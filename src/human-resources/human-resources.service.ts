@@ -19,10 +19,7 @@ export class HumanResourcesService {
   }
 
   // TODO. 모든 사원의 현재 정보 조회 가능한 API
-  async findAllEmployees() {
-    const page = 1;
-    const size = 20;
-
+  async findAllEmployees(page: number, size: number) {
     return await this.employeeRepository.find({ skip: (page - 1) * size, take: size });
   }
 
@@ -46,7 +43,11 @@ export class HumanResourcesService {
     const employees = await this.employeeRepository.find({ where: { department: { department_id } } });
 
     employees.forEach((employee) => {
-      employee.salary *= 1 + rate;
+      const salary = Number(employee.salary);
+      const increased = salary * rate;
+      const increasedSalary = salary + increased;
+
+      employee.salary = increasedSalary;
     });
 
     await this.employeeRepository.save(employees);
