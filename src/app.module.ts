@@ -1,12 +1,7 @@
-import { Inject, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { EmployeeModule } from './employee/employee.module';
-import { RegionModule } from './region/region.module';
-import { LocationModule } from './location/location.module';
-import { JobModule } from './job/job.module';
-import { CountryModule } from './country/country.module';
-import { DepartmentModule } from './department/department.module';
+import { HumanResourcesModule } from './human-resources/human-resources.module';
 import mysqlConfig from './config/mysql.config';
 
 @Module({
@@ -29,12 +24,7 @@ import mysqlConfig from './config/mysql.config';
         return obj;
       },
     }),
-    EmployeeModule,
-    RegionModule,
-    LocationModule,
-    JobModule,
-    CountryModule,
-    DepartmentModule,
+    HumanResourcesModule,
   ],
   controllers: [],
   providers: [],
