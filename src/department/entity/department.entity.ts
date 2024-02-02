@@ -18,5 +18,6 @@ export class Department {
   employees: Employee[];
 
   @ManyToOne(() => Employee, (employee) => employee.managedDepartments)
+  @JoinColumn({ name: 'manager_id' })
   manager: Employee;
 }
