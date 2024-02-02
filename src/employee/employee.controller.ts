@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { EmployeeService } from './employee.service';
 
 @Controller('employee')
@@ -6,8 +6,8 @@ export class EmployeeController {
   constructor(private readonly employeeService: EmployeeService) {}
 
   @Get(':id')
-  async findEmployeeById() {
-    return await this.employeeService.findEmployeeById();
+  async findEmployeeById(@Param('id') id: number) {
+    return await this.employeeService.findEmployeeById(id);
   }
 
   @Get()
