@@ -1,12 +1,12 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
 import { Job } from './job.entity';
 import { Employee } from './employee.entity';
 import { Department } from './department.entity';
 
 @Entity('job_history')
 export class JobHistory {
-  @PrimaryColumn()
-  employee_id: number;
+  @PrimaryGeneratedColumn('increment')
+  job_hisotry_id: number;
 
   @ManyToOne(() => Employee, (employee) => employee.jobHistories)
   @JoinColumn({ name: 'employee_id' })

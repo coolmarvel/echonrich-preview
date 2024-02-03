@@ -31,7 +31,7 @@ export class FindEmployeeResDto {
 
 export class FindJobHistoryResdto {
   @ApiProperty({ required: true })
-  employee_id: number;
+  employee: Employee;
 
   @ApiProperty({ required: true })
   start_date: Date;

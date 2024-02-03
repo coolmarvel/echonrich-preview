@@ -26,47 +26,14 @@ export class HumanResourcesService {
 
   // TODO. 특정 사원의 이력 정보 조회 API
   async findJobHisotryById(employee_id: number, page: number, size: number) {
-    const queryRunner = this.dataSource.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
+    const history = await this.jobHistoryRepository.find({
+      where: { employee: { employee_id } },
+      relations: ['employee', 'job', 'department'],
+      skip: (page - 1) * size,
+      take: size,
+    });
 
-    try {
-      const history = await queryRunner.query(
-        `SELECT
-          jh.employee_id,
-          jh.start_date,
-          jh.end_date,
-          jh.job_id,
-          j.job_title,
-          j.min_salary,
-          j.max_salary,
-          d.department_id,
-          d.department_name
-         FROM job_history jh
-         JOIN jobs j ON jh.job_id = j.job_id
-         JOIN departments d ON jh.department_id = d.department_id
-         WHERE jh.employee_id = ? LIMIT ? OFFSET ?`,
-        [employee_id, size, (page - 1) * size],
-      );
-
-      await queryRunner.commitTransaction();
-
-      return history;
-    } catch (error) {
-      await queryRunner.rollbackTransaction();
-      throw error;
-    } finally {
-      await queryRunner.release();
-    }
-
-    // const history = await this.jobHistoryRepository.find({
-    //   where: { employee: { employee_id } },
-    //   relations: ['job', 'department'],
-    //   skip: (page - 1) * size,
-    //   take: size,
-    // });
-
-    // return history;
+    return history;
   }
 
   // TODO. 부서 및 위치 정보 조회 API

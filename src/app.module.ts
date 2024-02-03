@@ -19,6 +19,7 @@ import mysqlConfig from './config/mysql.config';
           password: configService.get('mysql.password'),
           autoLoadEntities: true,
           synchronize: false,
+          timezone: '+09:00',
         };
 
         return obj;

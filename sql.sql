@@ -13,7 +13,7 @@ CREATE TABLE jobs ( job_id VARCHAR(10) NOT NULL, job_title VARCHAR(35) NOT NULL,
 
 CREATE TABLE employees ( employee_id INT (11) UNSIGNED NOT NULL, first_name VARCHAR(20), last_name VARCHAR(25) NOT NULL, email VARCHAR(25) NOT NULL, phone_number VARCHAR(20), hire_date DATE NOT NULL, job_id VARCHAR(10) NOT NULL, salary DECIMAL(8, 2) NOT NULL, commission_pct DECIMAL(2, 2), manager_id INT (11) UNSIGNED, department_id INT (11) UNSIGNED, PRIMARY KEY (employee_id) );
 
-CREATE TABLE job_history ( employee_id INT (11) UNSIGNED NOT NULL, start_date DATE NOT NULL, end_date DATE NOT NULL, job_id VARCHAR(10) NOT NULL, department_id INT (11) UNSIGNED NOT NULL );
+CREATE TABLE job_history ( job_hisotry_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT, employee_id INT(11) UNSIGNED NOT NULL, start_date DATE NOT NULL, end_date DATE NOT NULL, job_id VARCHAR(10) NOT NULL, department_id INT(11) UNSIGNED NOT NULL, PRIMARY KEY (job_hisotry_id), UNIQUE INDEX (employee_id, start_date), FOREIGN KEY (employee_id) REFERENCES employees(employee_id), FOREIGN KEY (job_id) REFERENCES jobs(job_id), FOREIGN KEY (department_id) REFERENCES departments(department_id) );
 
 ALTER TABLE job_history ADD UNIQUE INDEX (employee_id, start_date);
 
@@ -250,16 +250,7 @@ INSERT INTO employees VALUES ( 203, 'Susan', 'Mavris', 'SMAVRIS', '515.123.7777'
 INSERT INTO employees VALUES ( 204, 'Hermann', 'Baer', 'HBAER', '515.123.8888', STR_TO_DATE('07-JUN-1994', '%d-%M-%Y'), 'PR_REP', 10000, NULL, 101, 70 );
 INSERT INTO employees VALUES ( 205, 'Shelley', 'Higgins', 'SHIGGINS', '515.123.8080', STR_TO_DATE('07-JUN-1994', '%d-%M-%Y'), 'AC_MGR', 12000, NULL, 101, 110 );
 INSERT INTO employees VALUES ( 206, 'William', 'Gietz', 'WGIETZ', '51hr5.123.8181', STR_TO_DATE('07-JUN-1994', '%d-%M-%Y'), 'AC_ACCOUNT', 8300, NULL, 205, 110 ); COMMIT;
-INSERT INTO job_history VALUES ( 102, STR_TO_DATE('13-Jan-1993', '%d-%M-%Y'), STR_TO_DATE('24-Jul-1998', '%d-%M-%Y'), 'IT_PROG', 60 );
-INSERT INTO job_history VALUES ( 101, STR_TO_DATE('21-Sep-1989', '%d-%M-%Y'), STR_TO_DATE('27-Oct-1993', '%d-%M-%Y'), 'AC_ACCOUNT', 110 );
-INSERT INTO job_history VALUES ( 101, STR_TO_DATE('28-Oct-1993', '%d-%M-%Y'), STR_TO_DATE('15-Mar-1997', '%d-%M-%Y'), 'AC_MGR', 110 );
-INSERT INTO job_history VALUES ( 201, STR_TO_DATE('27-Feb-1996', '%d-%M-%Y'), STR_TO_DATE('19-Dec-1999', '%d-%M-%Y'), 'MK_REP', 20 );
-INSERT INTO job_history VALUES ( 114, STR_TO_DATE('24-Mar-1998', '%d-%M-%Y'), STR_TO_DATE('31-Dec-1999', '%d-%M-%Y'), 'ST_CLERK', 50 );
-INSERT INTO job_history VALUES ( 122, STR_TO_DATE('01-Jan-1999', '%d-%M-%Y'), STR_TO_DATE('31-Dec-1999', '%d-%M-%Y'), 'ST_CLERK', 50 );
-INSERT INTO job_history VALUES ( 200, STR_TO_DATE('17-Sep-1987', '%d-%M-%Y'), STR_TO_DATE('17-Jun-1993', '%d-%M-%Y'), 'AD_ASST', 90 );
-INSERT INTO job_history VALUES ( 176, STR_TO_DATE('24-Mar-1998', '%d-%M-%Y'), STR_TO_DATE('31-Dec-1998', '%d-%M-%Y'), 'SA_REP', 80 );
-INSERT INTO job_history VALUES ( 176, STR_TO_DATE('01-Jan-1999', '%d-%M-%Y'), STR_TO_DATE('31-Dec-1999', '%d-%M-%Y'), 'SA_MAN', 80 );
-INSERT INTO job_history VALUES ( 200, STR_TO_DATE('01-Jul-1994', '%d-%M-%Y'), STR_TO_DATE('31-Dec-1998', '%d-%M-%Y'), 'AC_ACCOUNT', 90 ); COMMIT; /* *************************************************************** ***************************FOREIGN KEYS*************************** **************************************************************** */
+INSERT INTO job_history (employee_id, start_date, end_date, job_id, department_id) VALUES (102, STR_TO_DATE('13-Jan-1993', '%d-%M-%Y'), STR_TO_DATE('24-Jul-1998', '%d-%M-%Y'), 'IT_PROG', 60), (101, STR_TO_DATE('21-Sep-1989', '%d-%M-%Y'), STR_TO_DATE('27-Oct-1993', '%d-%M-%Y'), 'AC_ACCOUNT', 110), (101, STR_TO_DATE('28-Oct-1993', '%d-%M-%Y'), STR_TO_DATE('15-Mar-1997', '%d-%M-%Y'), 'AC_MGR', 110), (201, STR_TO_DATE('27-Feb-1996', '%d-%M-%Y'), STR_TO_DATE('19-Dec-1999', '%d-%M-%Y'), 'MK_REP', 20), (114, STR_TO_DATE('24-Mar-1998', '%d-%M-%Y'), STR_TO_DATE('31-Dec-1999', '%d-%M-%Y'), 'ST_CLERK', 50), (122, STR_TO_DATE('01-Jan-1999', '%d-%M-%Y'), STR_TO_DATE('31-Dec-1999', '%d-%M-%Y'), 'ST_CLERK', 50), (200, STR_TO_DATE('17-Sep-1987', '%d-%M-%Y'), STR_TO_DATE('17-Jun-1993', '%d-%M-%Y'), 'AD_ASST', 90), (176, STR_TO_DATE('24-Mar-1998', '%d-%M-%Y'), STR_TO_DATE('31-Dec-1998', '%d-%M-%Y'), 'SA_REP', 80), (176, STR_TO_DATE('01-Jan-1999', '%d-%M-%Y'), STR_TO_DATE('31-Dec-1999', '%d-%M-%Y'), 'SA_MAN', 80), (200, STR_TO_DATE('01-Jul-1994', '%d-%M-%Y'), STR_TO_DATE('31-Dec-1998', '%d-%M-%Y'), 'AC_ACCOUNT', 90);
 
 ALTER TABLE countries ADD FOREIGN KEY (region_id) REFERENCES regions(region_id);
 
