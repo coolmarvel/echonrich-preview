@@ -63,3 +63,26 @@ export class FindDepartmentResDto {
   @ApiProperty({ required: true })
   location: Location;
 }
+
+export class IncreaseSalaryResDto {
+  @ApiProperty({ required: true })
+  first_name: string;
+
+  @ApiProperty({ required: true })
+  last_name: string;
+
+  @ApiProperty({ required: true })
+  email: string;
+
+  @ApiProperty({ required: true })
+  phone_number: string;
+
+  @ApiProperty({ required: true })
+  hire_date: Date;
+
+  @ApiProperty({ required: true })
+  salary: number;
+
+  @ApiProperty({ required: true })
+  commission_pct: number;
+}

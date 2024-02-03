@@ -55,18 +55,33 @@ export class HumanResourcesService {
 
   // TODO. 특정 부서의 급여 인상 API
   async increaseSalary(department_id: number, rate: number) {
-    const employees = await this.employeeRepository.find({ where: { department: { department_id } } });
+    const queryRunner = this.employeeRepository.manager.connection.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
 
-    employees.forEach((employee) => {
-      const salary = Number(employee.salary);
-      const increased = salary * rate;
-      const increasedSalary = salary + increased;
+    try {
+      const employees = await queryRunner.manager.find(Employee, { where: { department: { department_id } } });
+      if (!employees || employees.length === 0) throw new Error('해당 부서의 직원이 존재하지 않습니다.');
 
-      employee.salary = increasedSalary;
-    });
+      employees.forEach((employee) => {
+        const salary = Number(employee.salary);
+        const increased = salary * (rate / 100);
+        const increasedSalary = increased + salary;
+        const MAX_SALARY = 999999.99; // DECIMAL(8,2)의 MAX
 
-    await this.employeeRepository.save(employees);
+        if (increasedSalary > MAX_SALARY) employee.salary = MAX_SALARY;
+        else employee.salary = increasedSalary;
+      });
 
-    return true;
+      await queryRunner.manager.save(Employee, employees);
+      await queryRunner.commitTransaction();
+
+      return employees;
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw new Error('급여 인상 처리 중 오류가 발생했습니다. ' + error.message);
+    } finally {
+      await queryRunner.release();
+    }
   }
 }
