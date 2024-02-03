@@ -2,13 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Employee } from './entities/employee.entity';
 import { JobHistory } from './entities/job-history.entity';
-import { DataSource, Repository, getManager } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Department } from './entities/department.entity';
 
 @Injectable()
 export class HumanResourcesService {
   constructor(
-    private dataSource: DataSource,
     @InjectRepository(Employee) private employeeRepository: Repository<Employee>,
     @InjectRepository(JobHistory) private jobHistoryRepository: Repository<JobHistory>,
     @InjectRepository(Department) private departmentRepository: Repository<Department>,
@@ -37,9 +36,20 @@ export class HumanResourcesService {
   }
 
   // TODO. 부서 및 위치 정보 조회 API
-  async findAllDepartmentsWithDetails() {
+  async findAllDepartmentsWithDetails(page: number, size: number) {
     return await this.departmentRepository.find({
-      relations: ['manager', 'location', 'location.country', 'location.country.region'],
+      relations: ['manager', 'employees', 'location', 'location.country', 'location.country.region'],
+      order: { department_id: 'ASC' },
+      skip: (page - 1) * size,
+      take: size,
+    });
+  }
+
+  async findDepartmentWithDetails(department_id: number) {
+    return await this.departmentRepository.find({
+      where: { department_id },
+      relations: ['manager', 'employees', 'location', 'location.country', 'location.country.region'],
+      order: { department_id: 'ASC' },
     });
   }
 

@@ -2,6 +2,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Job } from '../entities/job.entity';
 import { Department } from '../entities/department.entity';
 import { Employee } from '../entities/employee.entity';
+import { Location } from '../entities/location.entity';
 
 export class FindEmployeeResDto {
   @ApiProperty({ required: true })
@@ -44,4 +45,21 @@ export class FindJobHistoryResdto {
 
   @ApiProperty({ required: true })
   department: Department;
+}
+
+export class FindDepartmentResDto {
+  @ApiProperty({ required: true })
+  department_id: number;
+
+  @ApiProperty({ required: true })
+  department_name: string;
+
+  @ApiProperty({ required: true })
+  manager: Employee;
+
+  @ApiProperty({ required: true })
+  employees: Employee[];
+
+  @ApiProperty({ required: true })
+  location: Location;
 }
