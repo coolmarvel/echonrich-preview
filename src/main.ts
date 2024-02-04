@@ -3,9 +3,18 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerCustomOptions, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
+import { ConfigService } from '@nestjs/config';
+import * as basicAuth from 'express-basic-auth';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  const configService = app.get(ConfigService);
+
+  app.use(
+    ['/docs', 'docs-json'],
+    basicAuth({ challenge: true, users: { [configService.get('swagger.username')]: configService.get('swagger.password') } }),
+  );
 
   const config = new DocumentBuilder().setTitle('EchonRich Preview Test').setDescription('').setVersion('1.0.0').build();
   const customOptions: SwaggerCustomOptions = { swaggerOptions: { persistAuthorization: true } };

@@ -3,10 +3,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { HumanResourcesModule } from './human-resources/human-resources.module';
 import mysqlConfig from './config/mysql.config';
+import swaggerConfig from './config/swagger.config';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true, load: [mysqlConfig] }),
+    ConfigModule.forRoot({ isGlobal: true, load: [mysqlConfig, swaggerConfig] }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => {
