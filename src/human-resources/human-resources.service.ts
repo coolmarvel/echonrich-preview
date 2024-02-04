@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Employee } from './entities/employee.entity';
 import { JobHistory } from './entities/job-history.entity';
@@ -45,7 +45,7 @@ export class HumanResourcesService {
 
     try {
       const employee = await this.findEmployeeById(employee_id);
-      if (!employee) throw new Error('해당 직원이 존재하지 않습니다.');
+      if (!employee) throw new HttpException('해당 직원이 존재하지 않습니다.', HttpStatus.BAD_REQUEST);
 
       employee.email = updateEmployeeBodyDto.email ?? employee.email;
       employee.phone_number = updateEmployeeBodyDto.phone_number ?? employee.phone_number;
@@ -56,7 +56,7 @@ export class HumanResourcesService {
       let previousDepartment = employee.department;
       if (updateEmployeeBodyDto.job_id && employee.job.job_id !== updateEmployeeBodyDto.job_id) {
         const job = await queryRunner.manager.findOne(Job, { where: { job_id: updateEmployeeBodyDto.job_id } });
-        if (!job) throw new Error('해당 직무가 존재하지 않습니다.');
+        if (!job) throw new HttpException('해당 직무가 존재하지 않습니다.', HttpStatus.BAD_REQUEST);
 
         previousJob = employee.job;
         employee.job = job;
@@ -65,7 +65,7 @@ export class HumanResourcesService {
 
       if (updateEmployeeBodyDto.department_id && employee.department.department_id !== updateEmployeeBodyDto.department_id) {
         const department = await queryRunner.manager.findOne(Department, { where: { department_id: updateEmployeeBodyDto.department_id } });
-        if (!department) throw new Error('해당 부서가 존재하지 않습니다.');
+        if (!department) throw new HttpException('해당 부서가 존재하지 않습니다.', HttpStatus.BAD_REQUEST);
 
         previousDepartment = employee.department;
         employee.department = department;
@@ -86,7 +86,7 @@ export class HumanResourcesService {
           newStartDate = new Date(employee.hire_date);
         }
 
-        if (newStartDate > currentDate) throw new Error('이력 변경 날짜가 미래로 설정될 수 없습니다.');
+        if (newStartDate > currentDate) throw new HttpException('이력 변경 날짜가 미래로 설정될 수 없습니다.', HttpStatus.BAD_REQUEST);
 
         const newJobHistory = new JobHistory();
         newJobHistory.employee = employee;
@@ -104,7 +104,7 @@ export class HumanResourcesService {
       return employee;
     } catch (error) {
       await queryRunner.rollbackTransaction();
-      throw new Error('사원 정보 업데이트 중 오류가 발생했습니다. ' + error.message);
+      throw new HttpException('사원 정보 업데이트 중 오류가 발생했습니다. ', HttpStatus.BAD_REQUEST);
     } finally {
       await queryRunner.release();
     }
@@ -136,7 +136,7 @@ export class HumanResourcesService {
 
     try {
       const employees = await queryRunner.manager.find(Employee, { where: { department: { department_id } } });
-      if (!employees || employees.length === 0) throw new Error('해당 부서의 직원이 존재하지 않습니다.');
+      if (!employees || employees.length === 0) throw new HttpException('해당 부서의 직원이 존재하지 않습니다.', HttpStatus.BAD_REQUEST);
 
       employees.forEach((employee) => {
         const salary = Number(employee.salary);
@@ -154,7 +154,7 @@ export class HumanResourcesService {
       return employees;
     } catch (error) {
       await queryRunner.rollbackTransaction();
-      throw new Error('급여 인상 처리 중 오류가 발생했습니다. ' + error.message);
+      throw new HttpException('급여 인상 처리 중 오류가 발생했습니다. ', HttpStatus.BAD_REQUEST);
     } finally {
       await queryRunner.release();
     }
