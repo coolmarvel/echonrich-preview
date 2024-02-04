@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { HumanResourcesModule } from './human-resources/human-resources.module';
+import { HealthModule } from './health/health.module';
 import mysqlConfig from './config/mysql.config';
 import swaggerConfig from './config/swagger.config';
 
@@ -27,6 +28,7 @@ import swaggerConfig from './config/swagger.config';
       },
     }),
     HumanResourcesModule,
+    HealthModule,
   ],
   controllers: [],
   providers: [],
