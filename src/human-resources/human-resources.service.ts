@@ -73,28 +73,27 @@ export class HumanResourcesService {
       }
 
       if (newJobHistoryNeeded) {
-        const currentDate = new Date();
-        let newStartDate = currentDate;
-
         const latestJobHistory = await queryRunner.manager.findOne(JobHistory, { where: { employee: { employee_id } }, order: { end_date: 'DESC' } });
+        const currentDate = new Date();
+        let newStartDate = new Date();
 
         if (latestJobHistory) {
-          latestJobHistory.end_date = currentDate;
+          latestJobHistory.end_date = latestJobHistory.end_date > currentDate ? currentDate : latestJobHistory.end_date;
           await queryRunner.manager.save(JobHistory, latestJobHistory);
 
           newStartDate = new Date(latestJobHistory.end_date.getTime() + 86400000);
-
-          if (newStartDate > currentDate) {
-            throw new Error('직무 변경 날짜가 미래로 설정될 수 없습니다.');
-          }
+        } else {
+          newStartDate = new Date(employee.hire_date);
         }
+
+        if (newStartDate > currentDate) throw new Error('이력 변경 날짜가 미래로 설정될 수 없습니다.');
 
         const newJobHistory = new JobHistory();
         newJobHistory.employee = employee;
         newJobHistory.start_date = newStartDate;
-        newJobHistory.end_date = newStartDate;
+        newJobHistory.end_date = currentDate;
         newJobHistory.job = previousJob;
-        newJobHistory.department = previousDepartment;
+        newJobHistory.department = employee.department;
 
         await queryRunner.manager.save(JobHistory, newJobHistory);
       }
