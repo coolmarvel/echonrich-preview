@@ -1,18 +1,15 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { PublicDataService } from './public-data.service';
+import { DailyBoxOfficeReqDto } from './dto/req.dto';
+import { ApiTags } from '@nestjs/swagger';
 
-@Controller('public-data')
+@ApiTags('Public-Datas')
+@Controller('api/public')
 export class PublicDataController {
   constructor(private readonly publicDataService: PublicDataService) {}
 
-  @Get()
-  async getDailyBoxOfficeList(targetDt: string, itemPerPage: string, multiMovieYn: string, repNationCd: string, wideAreaDc: string) {
-    return await this.publicDataService.getDailyBoxOfficeList(
-      (targetDt = '20240101'),
-      (itemPerPage = '10'),
-      (multiMovieYn = 'N'),
-      (repNationCd = 'K'),
-      (wideAreaDc = '0105000000'),
-    );
+  @Get('getDailyBoxOfficeList')
+  async getDailyBoxOfficeList(@Query() { targetDt, itemPerPage, multiMovieYn, repNationCd, wideAreaCd }: DailyBoxOfficeReqDto) {
+    return await this.publicDataService.getDailyBoxOfficeList({ targetDt, itemPerPage, multiMovieYn, repNationCd, wideAreaCd });
   }
 }
