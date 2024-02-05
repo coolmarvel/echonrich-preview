@@ -1,12 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-interface BoxOfficeResult {
+interface DailyBoxOfficeResult {
   boxofficeType: string;
   showRange: string;
-  dailyBoxOfficeList?: DailyBoxOfficeList[];
+  dailyBoxOfficeList?: BoxOfficeList[];
 }
 
-interface DailyBoxOfficeList {
+interface BoxOfficeList {
   rnum: string;
   rank: string;
   rankInten: string;
@@ -29,5 +29,17 @@ interface DailyBoxOfficeList {
 
 export class DailyBoxOfficeResDto {
   @ApiProperty({ required: true })
-  boxOfficeResult: BoxOfficeResult;
+  boxOfficeResult: DailyBoxOfficeResult;
+}
+
+interface WeeklyBoxOfficeResult {
+  boxofficeType: string;
+  showRange: string;
+  yearWeekTime: string;
+  weeklyBoxOfficeList?: BoxOfficeList[];
+}
+
+export class WeeklyBoxOfficeResDto {
+  @ApiProperty({ required: true })
+  boxOfficeResult: WeeklyBoxOfficeResult;
 }
