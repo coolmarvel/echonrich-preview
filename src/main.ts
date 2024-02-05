@@ -16,7 +16,10 @@ async function bootstrap() {
     basicAuth({ challenge: true, users: { [configService.get('swagger.username')]: configService.get('swagger.password') } }),
   );
 
-  const config = new DocumentBuilder().setTitle('EchonRich Preview Test').setDescription('').setVersion('1.0.0').build();
+  const config = new DocumentBuilder().setTitle('EchonRich Preview Test').setDescription(`
+  Author: COOLMARVEL
+  Github: https://github.com/coolmarvel/echonrich-preview
+  Contact: 010-9254-1305 | marvel19971125@gmail.com`).setVersion('1.0.0').build();
   const customOptions: SwaggerCustomOptions = { swaggerOptions: { persistAuthorization: true } };
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document, customOptions);
