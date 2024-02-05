@@ -19,6 +19,6 @@ export class PublicDataService {
 
     const result = this.httpService.get(this.url, { params });
 
-    return result.pipe(map((response) => response.data));
+    return result.toPromise().then((response) => response.data);
   }
 }
