@@ -43,3 +43,5 @@ export class WeeklyBoxOfficeResDto {
   @ApiProperty({ required: true })
   boxOfficeResult: WeeklyBoxOfficeResult;
 }
+
+export class CodeListResDto {}

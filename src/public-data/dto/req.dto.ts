@@ -67,3 +67,45 @@ export class WeeklyBoxOfficeReqDto {
   @IsOptional()
   wideAreaCd?: string;
 }
+
+export class MovieListReqDto {
+  @ApiProperty({ required: false, description: '현재 페이지를 지정합니다.(default : “1”)' })
+  @IsOptional()
+  curPage?: string;
+
+  @ApiProperty({ required: false, description: '결과 ROW 의 개수를 지정합니다.(default : “10”)' })
+  @IsOptional()
+  itemPerPage?: string;
+
+  @ApiProperty({ required: false, description: '영화명으로 조회합니다. (UTF-8 인코딩)' })
+  @IsOptional()
+  movieNm?: string;
+
+  @ApiProperty({ required: false, description: '감독명으로 조회합니다. (UTF-8 인코딩)' })
+  @IsOptional()
+  directorNm?: string;
+
+  @ApiProperty({ required: false, description: 'YYYY형식의 조회시작 개봉연도를 입력합니다.' })
+  @IsOptional()
+  openStartDt?: string;
+
+  @ApiProperty({ required: false, description: 'YYYY형식의 조회종료 개봉연도를 입력합니다.' })
+  @IsOptional()
+  openEndDt?: string;
+
+  @ApiProperty({ required: false, description: 'YYYY형식의 조회시작 제작연도를 입력합니다.' })
+  @IsOptional()
+  prdtStartYear?: string;
+
+  @ApiProperty({ required: false, description: 'YYYY형식의 조회종료 제작연도를 입력합니다.' })
+  @IsOptional()
+  prdtEndYear?: string;
+
+  @ApiProperty({ required: false, description: 'N개의 국적으로 조회할 수 있으며, 국적코드는 공통코드 조회 서비스에서 “2204” 로서 조회된 국적코드입니다. (default : 전체)' })
+  @IsOptional()
+  repNationCd?: string;
+
+  @ApiProperty({ required: false, description: 'N개의 영화유형코드로 조회할 수 있으며, 영화유형코드는 공통코드 조회 서비스에서 “2201”로서 조회된 영화유형코드입니다. (default: 전체)' })
+  @IsOptional()
+  movieTypeCd?: string;
+}
