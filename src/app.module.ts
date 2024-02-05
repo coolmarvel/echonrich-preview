@@ -6,11 +6,11 @@ import { HealthModule } from './health/health.module';
 import { PublicDataModule } from './public-data/public-data.module';
 import mysqlConfig from './config/mysql.config';
 import swaggerConfig from './config/swagger.config';
-import apiKeyConfig from './config/api-key.config';
+import publicDataConfig from './config/public-data.config';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true, load: [mysqlConfig, swaggerConfig, apiKeyConfig] }),
+    ConfigModule.forRoot({ isGlobal: true, load: [mysqlConfig, swaggerConfig, publicDataConfig] }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => {
