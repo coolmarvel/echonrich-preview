@@ -111,6 +111,15 @@ class Company {
 
   @ApiPropertyOptional()
   companyPartNm?: string;
+
+  @ApiPropertyOptional()
+  companyPartNames?: string;
+
+  @ApiPropertyOptional()
+  ceoNm?: string;
+
+  @ApiPropertyOptional()
+  filmoNames?: string;
 }
 
 class MovieList {
@@ -285,4 +294,20 @@ class MovieInfoResult {
 export class MovieInfoResDto {
   @ApiProperty()
   movieInfoResult: MovieInfoResult;
+}
+
+class CompanyListResult {
+  @ApiProperty()
+  totCnt: number;
+
+  @ApiProperty({ type: [Company] })
+  companyList: Company[];
+
+  @ApiProperty()
+  source: string;
+}
+
+export class CompanyListResDto {
+  @ApiProperty()
+  companyListResult: CompanyListResult;
 }

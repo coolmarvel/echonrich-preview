@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { IsOptional } from 'class-validator';
 import { IsYYYYMMDD } from 'src/common/decorators/date-validate.decorator';
@@ -114,4 +114,23 @@ export class MovieInfoReqDto {
   @ApiProperty({ required: true, example: '20124079', description: '영화코드를 지정합니다.' })
   @Transform((param) => String(param.value))
   movieCd: string;
+}
+
+export class CompanyListReqDto {
+  @ApiPropertyOptional({ required: false, description: '현재 페이지를 지정합니다.(default : “1”)' })
+  @Transform((param) => String(param.value))
+  curPage: string;
+
+  @ApiPropertyOptional({ required: false, description: '결과 ROW 의 개수를 지정합니다.(default : “10”)' })
+  @Transform((param) => String(param.value))
+  itemPerPage: string;
+
+  @ApiPropertyOptional({ required: false, description: '영화사명으로 조회합니다.' })
+  companyNm: string;
+
+  @ApiPropertyOptional({ required: false, description: '대표자명으로 조회합니다.' })
+  ceoNm: string;
+
+  @ApiPropertyOptional({ required: false, description: 'N개의 분류코드로 조회할 수 있으며, 분류코드는 공통코드 조회 서비스에서 “2601” 로서 조회된 분류코드입니다.(default: 전체)' })
+  companyPartCd: string;
 }
