@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { HealthCheck, HealthCheckService, TypeOrmHealthIndicator } from '@nestjs/terminus';
 
 @ApiTags('Health-Check')
@@ -10,6 +10,7 @@ export class HealthController {
     private db: TypeOrmHealthIndicator,
   ) {}
 
+  @ApiOperation({ summary: '데이터베이스 핑 체크' })
   @Get('health')
   @HealthCheck()
   check() {
