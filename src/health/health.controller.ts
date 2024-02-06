@@ -3,14 +3,14 @@ import { ApiTags } from '@nestjs/swagger';
 import { HealthCheck, HealthCheckService, TypeOrmHealthIndicator } from '@nestjs/terminus';
 
 @ApiTags('Health-Check')
-@Controller('health')
+@Controller('api')
 export class HealthController {
   constructor(
     private health: HealthCheckService,
     private db: TypeOrmHealthIndicator,
   ) {}
 
-  @Get()
+  @Get('health')
   @HealthCheck()
   check() {
     return this.health.check([() => this.db.pingCheck('database')]);
