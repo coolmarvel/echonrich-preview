@@ -1,7 +1,7 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { DailyBoxOfficeReqDto, MovieListReqDto, WeeklyBoxOfficeReqDto } from './dto/req.dto';
+import { DailyBoxOfficeReqDto, MovieInfoReqDto, MovieListReqDto, WeeklyBoxOfficeReqDto } from './dto/req.dto';
 
 @Injectable()
 export class PublicDataService {
@@ -33,6 +33,14 @@ export class PublicDataService {
     const params = { key: this.apiKey, curPage, itemPerPage, movieNm, directorNm, openStartDt, openEndDt, prdtStartYear, prdtEndYear, repNationCd, movieTypeCd };
 
     const result = this.httpService.get(this.url + 'movie/searchMovieList.json', { params });
+
+    return result.toPromise().then((response) => response.data);
+  }
+
+  async getMovieInfo({ movieCd }: MovieInfoReqDto) {
+    const params = { key: this.apiKey, movieCd };
+
+    const result = this.httpService.get(this.url + 'movie/searchMovieInfo.json', { params });
 
     return result.toPromise().then((response) => response.data);
   }

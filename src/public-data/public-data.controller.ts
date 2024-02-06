@@ -1,13 +1,13 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { PublicDataService } from './public-data.service';
-import { MovieListReqDto, DailyBoxOfficeReqDto, WeeklyBoxOfficeReqDto } from './dto/req.dto';
+import { MovieListReqDto, DailyBoxOfficeReqDto, WeeklyBoxOfficeReqDto, MovieInfoReqDto } from './dto/req.dto';
 import { ApiExtraModels, ApiTags } from '@nestjs/swagger';
-import { DailyBoxOfficeResDto, MovieListResDto, WeeklyBoxOfficeResDto } from './dto/res.dto';
+import { DailyBoxOfficeResDto, MovieInfoResDto, MovieListResDto, WeeklyBoxOfficeResDto } from './dto/res.dto';
 import { PageResDto } from 'src/common/dto/res.dto';
 import { ApiGetResponse } from 'src/common/decorators/swagger.decorator';
 
 @ApiTags('Public-Datas')
-@ApiExtraModels(DailyBoxOfficeResDto, WeeklyBoxOfficeResDto, MovieListResDto, PageResDto)
+@ApiExtraModels(DailyBoxOfficeResDto, WeeklyBoxOfficeResDto, MovieListResDto, MovieInfoResDto, PageResDto)
 @Controller('api/public')
 export class PublicDataController {
   constructor(private readonly publicDataService: PublicDataService) {}
@@ -28,5 +28,11 @@ export class PublicDataController {
   @Get('getMovieList')
   async getMovieList(@Query() { curPage, itemPerPage, movieNm, directorNm, openStartDt, openEndDt, prdtStartYear, prdtEndYear, repNationCd, movieTypeCd }: MovieListReqDto): Promise<MovieListResDto> {
     return await this.publicDataService.getMovieList({ curPage, itemPerPage, movieNm, directorNm, openStartDt, openEndDt, prdtStartYear, prdtEndYear, repNationCd, movieTypeCd });
+  }
+
+  @ApiGetResponse(MovieInfoResDto)
+  @Get('getMovieInfo')
+  async getMovieInfo(@Query() { movieCd }: MovieInfoReqDto): Promise<MovieInfoResDto> {
+    return await this.publicDataService.getMovieInfo({ movieCd });
   }
 }

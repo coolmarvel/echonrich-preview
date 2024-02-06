@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 class BoxOfficeList {
   @ApiProperty()
@@ -94,6 +94,9 @@ export class WeeklyBoxOfficeResDto {
 class Director {
   @ApiProperty()
   peopleNm: string;
+
+  @ApiPropertyOptional()
+  peopleNmEn: string;
 }
 
 class Company {
@@ -102,6 +105,12 @@ class Company {
 
   @ApiProperty()
   companyNm: string;
+
+  @ApiPropertyOptional()
+  companyNmEn?: string;
+
+  @ApiPropertyOptional()
+  companyPartNm?: string;
 }
 
 class MovieList {
@@ -159,4 +168,121 @@ class MovieListResult {
 export class MovieListResDto {
   @ApiProperty()
   movieListResult: MovieListResult;
+}
+
+class Nation {
+  @ApiProperty()
+  nationNm: string;
+}
+
+class Genre {
+  @ApiProperty()
+  genreNm: string;
+}
+
+class Actor {
+  @ApiProperty()
+  peopleNm: string;
+
+  @ApiProperty()
+  peopleNmEn: string;
+
+  @ApiProperty()
+  cast: string;
+
+  @ApiProperty()
+  castEn: string;
+}
+
+class ShowType {
+  @ApiProperty()
+  showTypeGroupNm: string;
+
+  @ApiProperty()
+  showTypeNm: string;
+}
+
+class Audit {
+  @ApiProperty()
+  auditNo: string;
+
+  @ApiProperty()
+  watchGradeNm: string;
+}
+
+class Staff {
+  @ApiProperty()
+  peopleNm: string;
+
+  @ApiProperty()
+  peopleNmEn: string;
+
+  @ApiProperty()
+  staffRoleNm: string;
+}
+
+class MovieInfo {
+  @ApiProperty()
+  movieCd: string;
+
+  @ApiProperty()
+  movieNm: string;
+
+  @ApiProperty()
+  movieNmEn: string;
+
+  @ApiProperty()
+  movieNmOg: string;
+
+  @ApiProperty()
+  showTm: string;
+
+  @ApiProperty()
+  prdtYear: string;
+
+  @ApiProperty()
+  openDt: string;
+
+  @ApiProperty()
+  prdtStatNm: string;
+
+  @ApiProperty()
+  typeNm: string;
+
+  @ApiProperty({ type: [Nation] })
+  nations: Nation[];
+
+  @ApiProperty({ type: [Genre] })
+  genres: Genre[];
+
+  @ApiProperty({ type: [Director] })
+  directors: Director[];
+
+  @ApiProperty({ type: [Actor] })
+  actors: Actor[];
+
+  @ApiProperty({ type: [ShowType] })
+  showTypes: ShowType[];
+
+  @ApiProperty({ type: [Company] })
+  companys: Company[];
+
+  @ApiProperty({ type: [Audit] })
+  audits: Audit[];
+
+  @ApiProperty({ type: [Staff] })
+  staffs: Staff[];
+}
+
+class MovieInfoResult {
+  @ApiProperty()
+  movieInfo: MovieInfo;
+
+  @ApiProperty()
+  source: string;
+}
+
+export class MovieInfoResDto {
+  @ApiProperty()
+  movieInfoResult: MovieInfoResult;
 }

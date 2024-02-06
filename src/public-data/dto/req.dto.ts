@@ -109,3 +109,9 @@ export class MovieListReqDto {
   @IsOptional()
   movieTypeCd?: string;
 }
+
+export class MovieInfoReqDto {
+  @ApiProperty({ required: true, example: '20124079', description: '영화코드를 지정합니다.' })
+  @Transform((param) => String(param.value))
+  movieCd: string;
+}
