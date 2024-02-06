@@ -134,3 +134,9 @@ export class CompanyListReqDto {
   @ApiPropertyOptional({ required: false, description: 'N개의 분류코드로 조회할 수 있으며, 분류코드는 공통코드 조회 서비스에서 “2601” 로서 조회된 분류코드입니다.(default: 전체)' })
   companyPartCd: string;
 }
+
+export class CompanyInfoReqDto {
+  @ApiPropertyOptional({ required: false, example: '20122497', description: '영화사코드를 지정합니다.' })
+  @Transform((param) => String(param.value))
+  companyCd: string;
+}

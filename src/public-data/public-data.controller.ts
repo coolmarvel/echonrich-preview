@@ -1,44 +1,50 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { PublicDataService } from './public-data.service';
-import { MovieListReqDto, DailyBoxOfficeReqDto, WeeklyBoxOfficeReqDto, MovieInfoReqDto, CompanyListReqDto } from './dto/req.dto';
+import { MovieListReqDto, DailyBoxOfficeReqDto, WeeklyBoxOfficeReqDto, MovieInfoReqDto, CompanyListReqDto, CompanyInfoReqDto } from './dto/req.dto';
 import { ApiExtraModels, ApiTags } from '@nestjs/swagger';
-import { CompanyListResDto, DailyBoxOfficeResDto, MovieInfoResDto, MovieListResDto, WeeklyBoxOfficeResDto } from './dto/res.dto';
+import { CompanyInfoResDto, CompanyListResDto, DailyBoxOfficeResDto, MovieInfoResDto, MovieListResDto, WeeklyBoxOfficeResDto } from './dto/res.dto';
 import { PageResDto } from 'src/common/dto/res.dto';
 import { ApiGetResponse } from 'src/common/decorators/swagger.decorator';
 
 @ApiTags('Public-Datas')
-@ApiExtraModels(DailyBoxOfficeResDto, WeeklyBoxOfficeResDto, MovieListResDto, MovieInfoResDto, CompanyListResDto, PageResDto)
-@Controller('api/public')
+@ApiExtraModels(DailyBoxOfficeResDto, WeeklyBoxOfficeResDto, MovieListResDto, MovieInfoResDto, CompanyListResDto, CompanyInfoResDto, PageResDto)
+@Controller('api')
 export class PublicDataController {
   constructor(private readonly publicDataService: PublicDataService) {}
 
   @ApiGetResponse(DailyBoxOfficeResDto)
-  @Get('getDailyBoxOfficeList')
+  @Get('boxoffice/daily')
   async getDailyBoxOfficeList(@Query() { targetDt, itemPerPage, multiMovieYn, repNationCd, wideAreaCd }: DailyBoxOfficeReqDto): Promise<DailyBoxOfficeResDto> {
     return await this.publicDataService.getDailyBoxOfficeList({ targetDt, itemPerPage, multiMovieYn, repNationCd, wideAreaCd });
   }
 
   @ApiGetResponse(WeeklyBoxOfficeResDto)
-  @Get('getWeeklyBoxOfficeList')
+  @Get('boxoffice/weekly')
   async getWeeklyBoxOfficeList(@Query() { targetDt, weekGb, itemPerPage, multiMovieYn, repNationCd, wideAreaCd }: WeeklyBoxOfficeReqDto): Promise<WeeklyBoxOfficeResDto> {
     return await this.publicDataService.getWeeklyBoxOfficeList({ targetDt, weekGb, itemPerPage, multiMovieYn, repNationCd, wideAreaCd });
   }
 
   @ApiGetResponse(MovieListResDto)
-  @Get('getMovieList')
+  @Get('movie/list')
   async getMovieList(@Query() { curPage, itemPerPage, movieNm, directorNm, openStartDt, openEndDt, prdtStartYear, prdtEndYear, repNationCd, movieTypeCd }: MovieListReqDto): Promise<MovieListResDto> {
     return await this.publicDataService.getMovieList({ curPage, itemPerPage, movieNm, directorNm, openStartDt, openEndDt, prdtStartYear, prdtEndYear, repNationCd, movieTypeCd });
   }
 
   @ApiGetResponse(MovieInfoResDto)
-  @Get('getMovieInfo')
+  @Get('movie/info')
   async getMovieInfo(@Query() { movieCd }: MovieInfoReqDto): Promise<MovieInfoResDto> {
     return await this.publicDataService.getMovieInfo({ movieCd });
   }
 
   @ApiGetResponse(CompanyListResDto)
-  @Get('getCompanyList')
+  @Get('company/list')
   async getCompanyList(@Query() { curPage, itemPerPage, companyNm, ceoNm, companyPartCd }: CompanyListReqDto): Promise<CompanyListResDto> {
     return await this.publicDataService.getCompanyList({ curPage, itemPerPage, companyNm, ceoNm, companyPartCd });
+  }
+
+  @ApiGetResponse(CompanyInfoResDto)
+  @Get('compnay/info')
+  async getCompanyInfo(@Query() { companyCd }: CompanyInfoReqDto): Promise<CompanyInfoResDto> {
+    return await this.publicDataService.getCompanyInfo({ companyCd });
   }
 }

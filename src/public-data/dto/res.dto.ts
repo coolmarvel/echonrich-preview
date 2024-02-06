@@ -311,3 +311,44 @@ export class CompanyListResDto {
   @ApiProperty()
   companyListResult: CompanyListResult;
 }
+
+class CompanyPart {
+  @ApiProperty()
+  companyPartNm: string;
+}
+
+class Filmo {
+  @ApiProperty()
+  movieCd: string;
+
+  @ApiProperty()
+  movieNm: string;
+
+  @ApiProperty()
+  companyPartNm: string;
+}
+
+class CompanyInfo {
+  @ApiProperty()
+  companyCd: string;
+
+  @ApiProperty()
+  companyNm: string;
+
+  @ApiProperty()
+  companyNmEn: string;
+
+  @ApiProperty()
+  ceoNm: string;
+
+  @ApiProperty({ type: [CompanyPart] })
+  parts: CompanyPart[];
+
+  @ApiProperty({ type: [Filmo] })
+  filmos: Filmo[];
+}
+
+export class CompanyInfoResDto {
+  @ApiProperty()
+  companyInfo: CompanyInfo;
+}

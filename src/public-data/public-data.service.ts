@@ -1,7 +1,7 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { CompanyListReqDto, DailyBoxOfficeReqDto, MovieInfoReqDto, MovieListReqDto, WeeklyBoxOfficeReqDto } from './dto/req.dto';
+import { CompanyInfoReqDto, CompanyListReqDto, DailyBoxOfficeReqDto, MovieInfoReqDto, MovieListReqDto, WeeklyBoxOfficeReqDto } from './dto/req.dto';
 
 @Injectable()
 export class PublicDataService {
@@ -49,6 +49,14 @@ export class PublicDataService {
     const params = { key: this.apiKey, curPage, itemPerPage, companyNm, ceoNm, companyPartCd };
 
     const result = this.httpService.get(this.url + 'company/searchCompanyList.json', { params });
+
+    return result.toPromise().then((response) => response.data);
+  }
+
+  async getCompanyInfo({ companyCd }: CompanyInfoReqDto) {
+    const params = { key: this.apiKey, companyCd };
+
+    const result = this.httpService.get(this.url + 'company/searchCompanyInfo.json', { params });
 
     return result.toPromise().then((response) => response.data);
   }
