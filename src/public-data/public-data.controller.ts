@@ -1,13 +1,13 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { PublicDataService } from './public-data.service';
-import { MovieListReqDto, DailyBoxOfficeReqDto, WeeklyBoxOfficeReqDto, MovieInfoReqDto, CompanyListReqDto, CompanyInfoReqDto } from './dto/req.dto';
+import { MovieListReqDto, DailyBoxOfficeReqDto, WeeklyBoxOfficeReqDto, MovieInfoReqDto, CompanyListReqDto, CompanyInfoReqDto, PeopleListReqDto } from './dto/req.dto';
 import { ApiExtraModels, ApiTags } from '@nestjs/swagger';
-import { CompanyInfoResDto, CompanyListResDto, DailyBoxOfficeResDto, MovieInfoResDto, MovieListResDto, WeeklyBoxOfficeResDto } from './dto/res.dto';
+import { CompanyInfoResDto, CompanyListResDto, DailyBoxOfficeResDto, MovieInfoResDto, MovieListResDto, PeopleListResDto, WeeklyBoxOfficeResDto } from './dto/res.dto';
 import { PageResDto } from 'src/common/dto/res.dto';
 import { ApiGetResponse } from 'src/common/decorators/swagger.decorator';
 
 @ApiTags('Public-Datas')
-@ApiExtraModels(DailyBoxOfficeResDto, WeeklyBoxOfficeResDto, MovieListResDto, MovieInfoResDto, CompanyListResDto, CompanyInfoResDto, PageResDto)
+@ApiExtraModels(DailyBoxOfficeResDto, WeeklyBoxOfficeResDto, MovieListResDto, MovieInfoResDto, CompanyListResDto, CompanyInfoResDto, PeopleListResDto, PageResDto)
 @Controller('api')
 export class PublicDataController {
   constructor(private readonly publicDataService: PublicDataService) {}
@@ -46,5 +46,11 @@ export class PublicDataController {
   @Get('compnay/info')
   async getCompanyInfo(@Query() { companyCd }: CompanyInfoReqDto): Promise<CompanyInfoResDto> {
     return await this.publicDataService.getCompanyInfo({ companyCd });
+  }
+
+  @ApiGetResponse(PeopleListResDto)
+  @Get('people/list')
+  async getPeopleList(@Query() { curPage, itemPerPage, peopleNm, filmoNames }: PeopleListReqDto): Promise<PeopleListResDto> {
+    return await this.publicDataService.getPeopleList({ curPage, itemPerPage, peopleNm, filmoNames });
   }
 }

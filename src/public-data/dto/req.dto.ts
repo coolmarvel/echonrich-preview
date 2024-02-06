@@ -140,3 +140,17 @@ export class CompanyInfoReqDto {
   @Transform((param) => String(param.value))
   companyCd: string;
 }
+
+export class PeopleListReqDto {
+  @ApiPropertyOptional({ required: false, description: '현재 페이지를 지정합니다.(default : “1”)' })
+  curPage: string;
+
+  @ApiPropertyOptional({ required: false, description: '결과 ROW 의 개수를 지정합니다.(default : “10”)' })
+  itemPerPage: string;
+
+  @ApiPropertyOptional({ required: false, description: '영화인명으로 조회합니다.' })
+  peopleNm: string;
+
+  @ApiPropertyOptional({ required: false, description: '필모리스트로 조회합니다.' })
+  filmoNames: string;
+}

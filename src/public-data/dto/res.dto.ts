@@ -352,3 +352,33 @@ export class CompanyInfoResDto {
   @ApiProperty()
   companyInfo: CompanyInfo;
 }
+
+class People {
+  @ApiProperty()
+  peopleCd: string;
+
+  @ApiProperty()
+  peopleNm: string;
+
+  @ApiProperty()
+  peopleNmEn: string;
+
+  @ApiProperty()
+  repRoleNm: string;
+
+  @ApiProperty()
+  filmoNames: string;
+}
+
+class PeopleListResult {
+  @ApiProperty()
+  totCnt: number;
+
+  @ApiProperty({ type: [People] })
+  peopleList: People[];
+}
+
+export class PeopleListResDto {
+  @ApiProperty()
+  peopleListResult: PeopleListResult;
+}
