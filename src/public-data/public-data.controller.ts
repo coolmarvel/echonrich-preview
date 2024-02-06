@@ -1,13 +1,13 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { PublicDataService } from './public-data.service';
-import { MovieListReqDto, DailyBoxOfficeReqDto, WeeklyBoxOfficeReqDto, MovieInfoReqDto, CompanyListReqDto, CompanyInfoReqDto, PeopleListReqDto } from './dto/req.dto';
+import { MovieListReqDto, DailyBoxOfficeReqDto, WeeklyBoxOfficeReqDto, MovieInfoReqDto, CompanyListReqDto, CompanyInfoReqDto, PeopleListReqDto, PeopleInfoReqDto } from './dto/req.dto';
 import { ApiExtraModels, ApiTags } from '@nestjs/swagger';
-import { CompanyInfoResDto, CompanyListResDto, DailyBoxOfficeResDto, MovieInfoResDto, MovieListResDto, PeopleListResDto, WeeklyBoxOfficeResDto } from './dto/res.dto';
+import { CompanyInfoResDto, CompanyListResDto, DailyBoxOfficeResDto, MovieInfoResDto, MovieListResDto, PeopleInfoResDto, PeopleListResDto, WeeklyBoxOfficeResDto } from './dto/res.dto';
 import { PageResDto } from 'src/common/dto/res.dto';
 import { ApiGetResponse } from 'src/common/decorators/swagger.decorator';
 
 @ApiTags('Public-Datas')
-@ApiExtraModels(DailyBoxOfficeResDto, WeeklyBoxOfficeResDto, MovieListResDto, MovieInfoResDto, CompanyListResDto, CompanyInfoResDto, PeopleListResDto, PageResDto)
+@ApiExtraModels(DailyBoxOfficeResDto, WeeklyBoxOfficeResDto, MovieListResDto, MovieInfoResDto, CompanyListResDto, CompanyInfoResDto, PeopleListResDto, PeopleInfoResDto, PageResDto)
 @Controller('api')
 export class PublicDataController {
   constructor(private readonly publicDataService: PublicDataService) {}
@@ -52,5 +52,11 @@ export class PublicDataController {
   @Get('people/list')
   async getPeopleList(@Query() { curPage, itemPerPage, peopleNm, filmoNames }: PeopleListReqDto): Promise<PeopleListResDto> {
     return await this.publicDataService.getPeopleList({ curPage, itemPerPage, peopleNm, filmoNames });
+  }
+
+  @ApiGetResponse(PeopleInfoResDto)
+  @Get('people/info')
+  async getPeopleInfo(@Query() { peopleCd }: PeopleInfoReqDto): Promise<PeopleInfoResDto> {
+    return await this.publicDataService.getPeopleInfo({ peopleCd });
   }
 }

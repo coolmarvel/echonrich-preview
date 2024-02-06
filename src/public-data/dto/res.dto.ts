@@ -382,3 +382,47 @@ export class PeopleListResDto {
   @ApiProperty()
   peopleListResult: PeopleListResult;
 }
+
+class Filmography {
+  @ApiProperty()
+  movieCd: string;
+
+  @ApiProperty()
+  movieNm: string;
+
+  @ApiProperty()
+  moviePartNm: string;
+}
+
+class PeopleInfo {
+  @ApiProperty()
+  peopleCd: string;
+
+  @ApiProperty()
+  peopleNm: string;
+
+  @ApiProperty()
+  peopleNmEn: string;
+
+  @ApiProperty()
+  sex: string;
+
+  @ApiProperty()
+  repRoleNm: string;
+
+  @ApiProperty({ type: [String], isArray: true })
+  homepages: string[];
+
+  @ApiProperty({ type: [Filmography] })
+  filmos: Filmography[];
+}
+
+class PeopleInfoResult {
+  @ApiProperty()
+  peopleInfo: PeopleInfo;
+}
+
+export class PeopleInfoResDto {
+  @ApiProperty()
+  peopleInfoResult: PeopleInfoResult;
+}

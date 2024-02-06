@@ -154,3 +154,9 @@ export class PeopleListReqDto {
   @ApiPropertyOptional({ required: false, description: '필모리스트로 조회합니다.' })
   filmoNames: string;
 }
+
+export class PeopleInfoReqDto {
+  @ApiPropertyOptional({ required: false, example: '20164556', description: '영화인코드를 지정합니다.' })
+  @Transform((param) => String(param.value))
+  peopleCd: string;
+}
